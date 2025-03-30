@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./CONTAINERIZATION_OF_MERN_APPLICATION/Brainly
+    container_name: backend
+    ports:
+      - "3000:3000"
+    networks:
+      - demo_network
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/mydatabase  
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./CONTAINERIZATION_OF_MERN_APPLICATION/Brainly-frontend
+    container_name: frontend
+    ports:
+      - "5174:5173"  
+    networks:
+      - demo_network
+
+  mongodb:
+    image: mongo:latest  
+    container_name: mongodb
+    ports:
+      - "27017:27017"  
+    networks:
+      - demo_network
+    volumes:
+      - mongo-data:/data/db  
+
+networks:
+  demo_network:
+    driver: bridge 
+
+volumes:
+  mongo-data:
+    driver: local
